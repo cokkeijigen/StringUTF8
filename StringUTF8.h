@@ -4,12 +4,6 @@
 using namespace std;
 class StringUTF8 {
 
-	char* str_c;
-	int* index;
-	int strlength;
-	int buffer;
-	int size;
-
 	char* toBIN(char c) {
 		char* result = new char[9];
 		result[8] = '\0';
@@ -26,7 +20,15 @@ class StringUTF8 {
 			if (c_str[i] == '0') return i;
 	}
 
+	char* str_c;
+	int* index;
+	int strlength;
+	int buffer;
+	int size;
+
 public:
+
+	StringUTF8(){};
 
 	StringUTF8(const char* ch) {
 		this->buffer = 4;
@@ -37,7 +39,7 @@ public:
 	}
 
 	void set_index_size() {
-		int this_lenth = size;
+		int this_lenth = this->size;
 		int* temp = new int[size += buffer];
 		for (size_t i = 0; i < this_lenth; i++)
 			temp[i] = this->index[i];
