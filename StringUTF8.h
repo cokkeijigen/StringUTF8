@@ -101,7 +101,7 @@ public:
 		return buffer;
 	}
 
-	void add(const char* str) {
+	void append(const char* str) {
 		int len = strlen(str);
 		int this_length = strlen(this->str_c) + len + 1;
 		char* temp = new char[this_length];
@@ -112,31 +112,40 @@ public:
 	}
 
 	StringUTF8 operator+=(const char* str) {
-		this->add(str);
+		this->append(str);
 		return this->str_c;
 	}
 
-	bool operator==(StringUTF8 str) {
-		if (strlen(this->str_c) == strlen(str.str_c)) {
+	bool equal(const char* str) {
+		if (strlen(this->str_c) == strlen(str)) {
 			for (size_t i = 0; i < strlen(this->str_c); i++)
-				if (this->str_c[i] != str.str_c[i]) return false;
+				if (this->str_c[i] != str[i]) return false;
 			return true;
 		}
 		return false;
 	}
 
+	bool operator==(StringUTF8 str) {
+		return this->equal(str.str_c);
+	}
+
+	bool operator==(const char * str) {
+		return this->equal(str);
+	}
+
 	bool contains(const char* str) {
 		int in_length = strlen(str);
-		if (in_length > strlen(this->str_c)) return false;
-		char* temp = this->str_c;
-		while (strlen(temp) >= in_length){
-			if([&](bool is) -> bool {
-				for (size_t i = 0; i < in_length; i++) {
-					if (temp[i] != str[i]) return is = false;
-				}return is;
-			}(true))
-				return true;
-			temp++;
+		if (in_length <= strlen(this->str_c)) {
+			char* temp = this->str_c;
+			while (strlen(temp) >= in_length) {
+				if ([&](bool is) -> bool {
+					for (size_t i = 0; i < in_length; i++) {
+						if (temp[i] != str[i]) return is = false;
+					}return is;
+					}(true))
+					return true;
+						temp++;
+			}
 		}
 		return false;
 	}
