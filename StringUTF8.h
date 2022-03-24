@@ -1,17 +1,20 @@
 #pragma once
 #include<string>
 
+using namespace std;
 class StringUTF8 {
 
-	int* index;
 	char* str_c;
+	int* index;
 	int strlength;
+	int buffer;
+	int size;
 
 	char* toBIN(char c) {
 		char* result = new char[9];
 		result[8] = '\0';
 		int index = 7;
-		for (int i = 0; i < 8; i++) {
+		for (size_t i = 0; i < 8; i++) {
 			result[index] = (c & (1 << i)) > 0 ? '1' : '0';
 			index--;
 		}
@@ -19,26 +22,29 @@ class StringUTF8 {
 	}
 
 	int get_length_type(char* c_str) {
-		for (int i = 0; i < strlen(c_str); i++) 
+		for (size_t i = 0; i < strlen(c_str); i++)
 			if (c_str[i] == '0') return i;
 	}
 
 public:
 
 	StringUTF8(const char* ch) {
-		index = new int[1024];
-		str_c = new char[strlen(ch) + 1];
-		strcpy(str_c, ch);
+		this->buffer = 4;
+		this->index = new int[size = buffer];
+		this->str_c = new char[strlen(ch)];
+		strcpy(this->str_c, ch);
 		this->init();
 	}
 
 	void set_index_size() {
-		int size = this->strlength + 1024;
-		int* temp = new int[size];
-		for (size_t i = 0; i <= this->strlength; i++)
+		int this_lenth = size;
+		int* temp = new int[size += buffer];
+		for (size_t i = 0; i < this_lenth; i++)
 			temp[i] = this->index[i];
 		delete[] this->index;
-		this->index = temp;
+		this->index = new int[size];
+		for (size_t i = 0; i < this_lenth; i++)
+			this->index[i] = temp[i];
 		delete[] temp;
 	}
 
@@ -46,17 +52,14 @@ public:
 		if (strlength == 0) index[0] = value;
 		else index[strlength] = value;
 		++strlength;
-		if (strlength + 1 % 1024 == 0)
+		if ((strlength + 1) == size)
 			set_index_size();
 	}
 
 	void init() {
-		char temp;
-		strlength = 0;
-		for (int i = 0; i < strlen(str_c); i++) {
-			temp = str_c[i];
-			char* c_bin = toBIN(temp);
-			int Type = get_length_type(c_bin); 
+		this->strlength = 0;
+		for (size_t i = 0; i < strlen(str_c); i++) {
+			int Type = get_length_type(toBIN(str_c[i]));
 			if (Type == 0) i += 0;
 			if (Type == 2) i += 1;
 			if (Type == 3) i += 2;
@@ -78,16 +81,16 @@ public:
 		char* buffer = NULL;
 		if (value == 0) {
 			int len = index[value];
-			buffer = new char[len + 1];
-			for (int i = 0; i <= len; i++)
+			buffer = new char[len + 2];
+			for (size_t i = 0; i <= len; i++)
 				buffer[i] = str_c[i];
 			buffer[len + 1] = '\0';
 		}
 		else {
-			int len = index[value] - index[value - 1];
+			size_t len = index[value] - index[value - 1];
 			buffer = new char[len + 1];
-			int _i = 0;
-			for (int i = index[value - 1] + 1; i <= index[value]; i++) {
+			size_t _i = 0;
+			for (size_t i = index[value - 1] + 1; i <= index[value]; i++) {
 				buffer[_i] = str_c[i];
 				_i++;
 			}
@@ -109,6 +112,35 @@ public:
 	StringUTF8 operator+=(const char* str) {
 		this->add(str);
 		return this->str_c;
+	}
+
+	bool operator==(StringUTF8 str) {
+		if (strlen(this->str_c) == strlen(str.str_c)) {
+			for (size_t i = 0; i < strlen(this->str_c); i++)
+				if (this->str_c[i] != str.str_c[i]) return false;
+			return true;
+		}
+		return false;
+	}
+
+	bool contains(const char* str) {
+		int in_length = strlen(str);
+		if (in_length > strlen(this->str_c)) return false;
+		char* temp = this->str_c;
+		while (strlen(temp) >= in_length){
+			if([&](bool is) -> bool {
+				for (size_t i = 0; i < in_length; i++) {
+					if (temp[i] != str[i]) return is = false;
+				}return is;
+			}(true))
+				return true;
+			temp++;
+		}
+		return false;
+	}
+
+	bool contains(StringUTF8 str_utf8) {
+		return this->contains(str_utf8.tochars());
 	}
 
 };
