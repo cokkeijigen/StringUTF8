@@ -1,10 +1,9 @@
 #pragma once
 #include<string>
 
-using namespace std;
 class StringUTF8 {
 
-	char* toBIN(char c) {
+	char* toBIN(const char c) {
 		char* result = new char[9];
 		result[8] = '\0';
 		int index = 7;
@@ -15,27 +14,9 @@ class StringUTF8 {
 		return result;
 	}
 
-	int get_length_type(char* c_str) {
+	int get_length_type(const char* c_str) {
 		for (size_t i = 0; i < strlen(c_str); i++)
 			if (c_str[i] == '0') return i;
-	}
-
-	char* str_c;
-	int* index;
-	int strlength;
-	int buffer;
-	int size;
-
-public:
-
-	StringUTF8(){};
-
-	StringUTF8(const char* ch) {
-		this->buffer = 4;
-		this->index = new int[size = buffer];
-		this->str_c = new char[strlen(ch)];
-		strcpy(this->str_c, ch);
-		this->init();
 	}
 
 	void set_index_size() {
@@ -50,9 +31,9 @@ public:
 		delete[] temp;
 	}
 
-	void add_index(const int value) {
-		if (strlength == 0) index[0] = value;
-		else index[strlength] = value;
+	void add_index(const int val) {
+		if (strlength == 0) index[0] = val;
+		else index[strlength] = val;
 		++strlength;
 		if ((strlength + 1) == size)
 			set_index_size();
@@ -70,6 +51,31 @@ public:
 		}
 	}
 
+	char* str_c;
+	int* index;
+	int strlength;
+	int buffer;
+	int size;
+
+public:
+
+	StringUTF8() {
+		this->str_c = new char('\0');
+		this->index = new int(0);
+		this->strlength = 0;
+		this->buffer = 0;
+		this->size = 0;
+	}
+
+	StringUTF8(const char* ch) {
+		this->buffer = 4;
+		this->index = new int[size = buffer];
+		this->str_c = new char[strlen(ch)];
+		strcpy(this->str_c, ch);
+		this->init();
+	}
+
+
 	char* tochars() {
 		return str_c;
 	}
@@ -78,21 +84,21 @@ public:
 		return strlength; 
 	}
 
-	char* operator[](int value) {
-		if (value >= strlength) return new char[0];
+	char* operator[](const int val) {
+		if (val >= strlength) return new char('\0');
 		char* buffer = NULL;
-		if (value == 0) {
-			int len = index[value];
+		if (val == 0) {
+			int len = index[val];
 			buffer = new char[len + 2];
 			for (size_t i = 0; i <= len; i++)
 				buffer[i] = str_c[i];
 			buffer[len + 1] = '\0';
 		}
 		else {
-			size_t len = index[value] - index[value - 1];
+			size_t len = index[val] - index[val - 1];
 			buffer = new char[len + 1];
 			size_t _i = 0;
-			for (size_t i = index[value - 1] + 1; i <= index[value]; i++) {
+			for (size_t i = index[val - 1] + 1; i <= index[val]; i++) {
 				buffer[_i] = str_c[i];
 				_i++;
 			}
@@ -102,18 +108,23 @@ public:
 	}
 
 	void append(const char* str) {
-		int len = strlen(str);
-		int this_length = strlen(this->str_c) + len + 1;
-		char* temp = new char[this_length];
+		int inlen = strlen(str);
+		int slen = strlen(this->str_c) + inlen + 1;
+		char* temp = new char[slen];
 		strcpy(temp, this->str_c);
 		strcat(temp, str);
 		this->str_c = temp;
-		init();
+		this->init();
 	}
 
-	StringUTF8 operator+=(const char* str) {
+	StringUTF8* operator+=(const char* str) {
 		this->append(str);
-		return this->str_c;
+		return this;
+	}
+
+	StringUTF8* operator+=(const StringUTF8 &str) {
+		this->append(str.str_c);
+		return this;
 	}
 
 	bool equal(const char* str) {
@@ -125,7 +136,11 @@ public:
 		return false;
 	}
 
-	bool operator==(StringUTF8 str) {
+	bool equal(const StringUTF8 &str) {
+		return this->equal(str.str_c);
+	}
+
+	bool operator==(const StringUTF8 &str) {
 		return this->equal(str.str_c);
 	}
 
@@ -134,37 +149,37 @@ public:
 	}
 
 	bool contains(const char* str) {
-		int in_length = strlen(str);
-		if (in_length <= strlen(this->str_c)) {
+		int inlen = strlen(str);
+		if (inlen <= strlen(this->str_c)) {
 			char* temp = this->str_c;
-			while (strlen(temp) >= in_length) {
+			while (strlen(temp) >= inlen) {
 				if ([&](bool is) -> bool {
-					for (size_t i = 0; i < in_length; i++) {
+					for (size_t i = 0; i < inlen; i++) {
 						if (temp[i] != str[i]) return is = false;
 					}return is;
-					}(true))
-					return true;
-						temp++;
+					}(true)) return true;
+				temp++;
 			}
 		}
 		return false;
 	}
 
-	bool contains(StringUTF8 str_utf8) {
-		return this->contains(str_utf8.tochars());
+	bool contains(const StringUTF8 &str_utf8) {
+		return this->contains(str_utf8.str_c);
 	}
 
 };
 
-std::ostream& operator<<(std::ostream& cout, StringUTF8& obj) {
-	std::cout << obj.tochars();
-	return std::cout;
+StringUTF8 operator+(StringUTF8 & const str1, StringUTF8 & const str2) {
+	int slen = strlen(str1.tochars()) + strlen(str2.tochars()) + 1;
+	char* result = new char[slen];
+	strcpy(result, str1.tochars());
+	strcat(result, str2.tochars());
+	return result;
 }
 
-StringUTF8 operator+(StringUTF8 str1, StringUTF8 str2) {
-	int this_length = strlen(str1.tochars()) + strlen(str2.tochars()) + 1;
-	char* temp = new char[this_length];
-	strcpy(temp, str1.tochars());
-	strcat(temp, str2.tochars());
-	return temp;
+using namespace std;
+ostream& operator<<(ostream& cout,StringUTF8& const str) {
+	cout << str.tochars();
+	return cout;
 }
