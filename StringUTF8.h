@@ -14,40 +14,40 @@ class StringUTF8 {
 		return result;
 	}
 
-	int get_length_type(const char* c_str) {
+	int getType(const char* c_str) {
 		for (size_t i = 0; i < strlen(c_str); i++)
 			if (c_str[i] == '0') return i;
 	}
 
-	void set_index_size() {
-		int this_lenth = this->size;
-		int* temp = new int[size += buffer];
-		for (size_t i = 0; i < this_lenth; i++)
+	void setupBufferSize() {
+		int slen = this->size;
+		int* temp = new int[slen];
+		for (size_t i = 0; i < slen; i++)
 			temp[i] = this->index[i];
 		delete[] this->index;
-		this->index = new int[size];
-		for (size_t i = 0; i < this_lenth; i++)
+		this->index = new int[size += buffer];
+		for (size_t i = 0; i < slen; i++)
 			this->index[i] = temp[i];
 		delete[] temp;
 	}
 
-	void add_index(const int val) {
+	void putsindex(const int val) {
 		if (strlength == 0) index[0] = val;
 		else index[strlength] = val;
 		++strlength;
 		if ((strlength + 1) == size)
-			set_index_size();
+			setupBufferSize();
 	}
 
 	void init() {
 		this->strlength = 0;
 		for (size_t i = 0; i < strlen(str_c); i++) {
-			int Type = get_length_type(toBIN(str_c[i]));
+			int Type = getType(toBIN(str_c[i]));
 			if (Type == 0) i += 0;
 			if (Type == 2) i += 1;
 			if (Type == 3) i += 2;
 			if (Type == 4) i += 3;
-			add_index(i);
+			putsindex(i);
 		}
 	}
 
@@ -75,6 +75,9 @@ public:
 		this->init();
 	}
 
+	void insert(int val, char *str) {
+
+	}
 
 	char* tochars() {
 		return str_c;
