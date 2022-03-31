@@ -1,5 +1,9 @@
 # StringUTF8
 对utf-8编码数据的切分，以及更容易化操作 <br>
+使用方法：<br>
+  ```
+  #include"StringUTF8.h"
+  ```
 构造函数：<br>
 ```
   StringUTF8()
@@ -12,12 +16,17 @@
 ```
 运算符重载：<br>
 ```
+  //  可以通过下标引索单个文字
   char* operator[](const int val)
+  //  可以直接使用+=追加字符串对象
   StringUTF8* operator+=(const char* str)
   StringUTF8* operator+=(const StringUTF8 &str)
+  //  可以直接使用==判断两个字符串是否相等
   bool operator==(const StringUTF8 &str)
   bool operator==(const char * str)
+  //  可以使用+来拼接字符串
   StringUTF8 operator+(StringUTF8 & const str1, StringUTF8 & const str2)
+  //  可以直接使用ostream输出内容
   ostream& operator<<(ostream& cout,StringUTF8& const str)
   ostream& operator<<(ostream& cout,StringUTF8* const str)
 ```
