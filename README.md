@@ -45,7 +45,7 @@
   ```
     void append(const char* str);
   ```
-  4、返回char`*`指针<br>
+  4、返回`char*`指针<br>
   ```
     char* tochars();
   ```
