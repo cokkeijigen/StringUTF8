@@ -6,10 +6,10 @@ class StringUTF8 {
 	char* toBIN(const char c) {
 		char* result = new char[9];
 		result[8] = '\0';
-		int index = 7;
+		int in = 7;
 		for (size_t i = 0; i < 8; i++) {
-			result[index] = (c & (1 << i)) > 0 ? '1' : '0';
-			index--;
+			result[in] = (c & (1 << i)) > 0 ? '1' : '0';
+			in--;
 		}
 		return result;
 	}
@@ -42,6 +42,7 @@ class StringUTF8 {
 	void init() {
 		this->strlength = 0;
 		for (size_t i = 0; i < strlen(str_c); i++) {
+			if (str_c[i] == '\0') break;
 			int Type = getType(toBIN(str_c[i]));
 			if (Type == 0) i += 0;
 			if (Type == 2) i += 1;
@@ -75,8 +76,21 @@ public:
 		this->init();
 	}
 
-	void insert(int val, char *str) {
-
+	char* insert(int val, char *str) {
+		char* savebuffer = NULL;
+		size_t buffersize = strlen(this->str_c) + strlen(str);
+		size_t startlen = static_cast<size_t>(index[val] + 1) ;
+		savebuffer = new char[buffersize + 3];
+		for (size_t i = 0; i < startlen; i++) 
+			savebuffer[i] = this->str_c[i];
+		for (size_t i = startlen, s = 0; s < strlen(str); s++, i++)
+			savebuffer[i] = str[s];
+		for (size_t i = startlen + strlen(str), s = startlen; s < strlen(this->str_c); i++, s++)
+			savebuffer[i] = this->str_c[s];
+		savebuffer[buffersize + 1] = '\0';
+		this->str_c = savebuffer;
+		this->init();
+		return this->str_c;
 	}
 
 	char* tochars() {
@@ -98,10 +112,10 @@ public:
 			buffer[len + 1] = '\0';
 		}
 		else {
-			size_t len = index[val] - index[val - 1];
+			size_t len = static_cast<size_t>(index[val] - index[val - 1]);
 			buffer = new char[len + 1];
 			size_t _i = 0;
-			for (size_t i = index[val - 1] + 1; i <= index[val]; i++) {
+			for (size_t i = static_cast<size_t>(index[val - 1]) + 1; i <= index[val]; i++) {
 				buffer[_i] = str_c[i];
 				_i++;
 			}
@@ -184,5 +198,9 @@ StringUTF8 operator+(StringUTF8 & const str1, StringUTF8 & const str2) {
 using namespace std;
 ostream& operator<<(ostream& cout,StringUTF8& const str) {
 	cout << str.tochars();
+	return cout;
+}
+ostream& operator<<(ostream& cout,StringUTF8* const str) {
+	cout << str->tochars();
 	return cout;
 }
