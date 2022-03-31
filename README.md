@@ -2,13 +2,13 @@
 对utf-8编码数据的切分，以及更容易化操作 <br>
 构造函数：<br>
 ```
-  StringUTF8()<br>
-  StringUTF8(const char* ch)<br>
+  StringUTF8()
+  StringUTF8(const char* ch)
 ```
 插入字符串：<br>
 ```
-  char* insert(int val, char *str)<br>
-  char* insert(int val, StringUTF8 &str)<br>
+  char* insert(int val, char *str)
+  char* insert(int val, StringUTF8 &str)
 ```
 运算符重载：<br>
 ```
