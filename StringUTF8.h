@@ -79,18 +79,32 @@ public:
 	}
 
 	char* insert(int val, char *inchars) {
+		if (val < -1 || val >= strlength) return this->str_c;
+
 		char* savebuffer = NULL;
 		int inlen = strlen(inchars);
 		int tslen = strlen(this->str_c);
 		size_t buffersize = static_cast<size_t>(tslen + inlen);
 		size_t startlen = static_cast<size_t>(index[val] + 1) ;
 		savebuffer = new char[buffersize + 3];
-		for (size_t i = 0; i < startlen; i++)
-			savebuffer[i] = this->str_c[i];
-		for (size_t i = startlen, s = 0; s < strlen(inchars); s++, i++)
-			savebuffer[i] = inchars[s];
-		for (size_t i = startlen + strlen(inchars), s = startlen; s < tslen; i++, s++)
-			savebuffer[i] = this->str_c[s];
+
+		if (val == -1) {
+			strcpy(savebuffer, inchars);
+			strcat(savebuffer, this->str_c);
+		}
+		else if (val = strlength - 1) {
+			strcpy(savebuffer, this->str_c);
+			strcat(savebuffer, inchars);
+		}
+		else{
+			for (size_t i = 0; i < startlen; i++) 
+				savebuffer[i] = this->str_c[i];
+			for (size_t i = startlen, s = 0; s < strlen(inchars); s++, i++) 
+				savebuffer[i] = inchars[s];
+			for (size_t i = startlen + strlen(inchars), s = startlen; s < tslen; i++, s++) 
+				savebuffer[i] = this->str_c[s];
+		}
+
 		savebuffer[buffersize] = '\0';
 		this->str_c = savebuffer;
 		this->init();
