@@ -31,25 +31,35 @@
   ostream& operator<<(ostream& cout,StringUTF8* const str);
 ```
 其他函数：<br>
-  1、判断是否包含传入的字符串<br>
+  判断是否包含传入的字符串<br>
   ```
     bool contains(const char* str);
     bool contains(const StringUTF8 &str_utf8);
   ```
-  2、比较传入的字符串是否与当前相同<br>
+  比较传入的字符串是否与当前相同<br>
   ```
     bool equal(const StringUTF8 &str);
     bool equal(const char* str);
   ```
-  3、往当前对象追加字符串<br>
+  往当前对象追加字符串<br>
   ```
     void append(const char* str);
   ```
-  4、返回`char*`指针<br>
+  检查字符串是否是以指定子字符串开头<br>
+  ```
+    bool starstWith(const char* instr);
+    bool starstWith(const StringUTF8& str_utf8);
+  ```
+  字符串是否以指定的后缀结束<br>
+  ```
+    bool endsWith(const char* instr);
+    bool endsWith(const StringUTF8& str_utf8);
+  ```
+  返回`char*`指针<br>
   ```
     char* tochars();
   ```
-  6、返回字数<br>
+  返回字数<br>
   ```
     int length(); 
   ```
