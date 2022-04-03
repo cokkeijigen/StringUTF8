@@ -13,14 +13,18 @@
 ```
   //  可以通过下标引索单个文字
   char* operator[](const int val);
+  
   //  可以直接使用+=追加字符串对象
   StringUTF8* operator+=(const char* inchars);
   StringUTF8* operator+=(const StringUTF8 &str_utf8);
+  
   //  可以直接使用==判断两个字符串是否相等
   bool operator==(const StringUTF8 &str_utf8);
   bool operator==(const char * inchars);
+  
   //  可以使用+来拼接字符串
   StringUTF8 operator+(StringUTF8 & const str1_utf8, StringUTF8 & const str2_utf8);
+  
   //  可以直接使用ostream输出内容
   ostream& operator<<(ostream& cout,StringUTF8& const str_utf8);
   ostream& operator<<(ostream& cout,StringUTF8* const str_utf8);
