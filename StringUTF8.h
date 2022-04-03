@@ -101,7 +101,7 @@ public:
 		return this->insert(val, str_utf8.str_c);
 	}
 
-	bool startWith(const char* instr) {
+	bool startsWith(const char* instr) {
 		int inlen = strlen(instr);
 		if (inlen > strlen(this->str_c)) return false;
 		for (size_t i = 0; i < inlen; i++)
@@ -109,11 +109,11 @@ public:
 		return true;
 	}
 
-	bool startWith(const StringUTF8& str_utf8) {
-		return this->startWith(str_utf8.str_c);
+	bool startsWith(const StringUTF8& str_utf8) {
+		return this->startsWith(str_utf8.str_c);
 	}
 
-	bool endWith(const char* instr) {
+	bool endsWith(const char* instr) {
 		int inlen = strlen(instr);
 		int tslen = strlen(this->str_c);
 		if (inlen > tslen) return false;
@@ -122,8 +122,8 @@ public:
 		return true;
 	}
 
-	bool endWith(const StringUTF8& str_utf8) {
-		return this->endWith(str_utf8.str_c);
+	bool endsWith(const StringUTF8& str_utf8) {
+		return this->endsWith(str_utf8.str_c);
 	}
 
 	char* tochars() {
