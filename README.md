@@ -30,7 +30,7 @@
   ostream& operator<<(ostream& cout,StringUTF8& const str);
   ostream& operator<<(ostream& cout,StringUTF8* const str);
 ```
-##其他函数：<br>
+## 其他函数：<br>
   判断是否包含传入的字符串<br>
   ```
     bool contains(const char* str);
