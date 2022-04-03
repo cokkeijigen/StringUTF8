@@ -84,7 +84,7 @@ public:
 		int inlen = strlen(inchars);
 		int tslen = strlen(this->str_c);
 		size_t buffersize = static_cast<size_t>(tslen + inlen);
-		size_t startlen = static_cast<size_t>(index[val] + 1) ;
+		size_t startlen = static_cast<size_t>(index[val] + 1);
 		savebuffer = new char[buffersize + 3];
 
 		if (val == -1) {
@@ -223,7 +223,7 @@ public:
 					for (size_t i = 0; i < inlen; i++) {
 						if (temp[i] != inchars[i]) return is = false;
 					}return is;
-					}(true)) return true;
+				}(true)) return true;
 				temp++;
 			}
 		}
