@@ -4,14 +4,14 @@
 class StringUTF8 {
 
 	char* toBIN(const char c) {
-		char* result = new char[9];
-		result[8] = '\0';
+		char* binary = new char[9];
+		binary[8] = '\0';
 		int in = 7;
 		for (size_t i = 0; i < 8; i++) {
-			result[in] = (c & (1 << i)) > 0 ? '1' : '0';
+			binary[in] = (c & (1 << i)) > 0 ? '1' : '0';
 			in--;
 		}
-		return result;
+		return binary;
 	}
 
 	int getType(const char* c_str) {
@@ -50,7 +50,6 @@ class StringUTF8 {
 			if (Type == 3) i += 2;
 			if (Type == 4) i += 3;
 			putsindex(i);
-
 		}
 	}
 
@@ -80,7 +79,7 @@ public:
 
 	char* insert(int val, char *inchars) {
 		if (val < -1 || val >= strlength) return this->str_c;
-
+		
 		char* savebuffer = NULL;
 		int inlen = strlen(inchars);
 		int tslen = strlen(this->str_c);
@@ -239,10 +238,10 @@ public:
 
 StringUTF8 operator+(StringUTF8 & const str1_utf8, StringUTF8 & const str2_utf8) {
 	int slen = strlen(str1_utf8.tochars()) + strlen(str2_utf8.tochars()) + 1;
-	char* result = new char[slen];
-	strcpy(result, str1_utf8.tochars());
-	strcat(result, str2_utf8.tochars());
-	return result;
+	char* chars = new char[slen];
+	strcpy(chars, str1_utf8.tochars());
+	strcat(chars, str2_utf8.tochars());
+	return chars;
 }
 
 using namespace std;
