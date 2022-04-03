@@ -70,26 +70,26 @@ public:
 		this->size = 0;
 	}
 
-	StringUTF8(const char* inchar) {
+	StringUTF8(const char* inchars) {
 		this->buffer = 4;
 		this->index = new int[size = buffer];
-		this->str_c = new char[strlen(inchar)];
-		strcpy(this->str_c, inchar);
+		this->str_c = new char[strlen(inchars)];
+		strcpy(this->str_c, inchars);
 		this->init();
 	}
 
-	char* insert(int val, char *instr) {
+	char* insert(int val, char *inchars) {
 		char* savebuffer = NULL;
-		int inlen = strlen(instr);
+		int inlen = strlen(inchars);
 		int tslen = strlen(this->str_c);
 		size_t buffersize = static_cast<size_t>(tslen + inlen);
 		size_t startlen = static_cast<size_t>(index[val] + 1) ;
 		savebuffer = new char[buffersize + 3];
 		for (size_t i = 0; i < startlen; i++)
 			savebuffer[i] = this->str_c[i];
-		for (size_t i = startlen, s = 0; s < strlen(instr); s++, i++)
-			savebuffer[i] = instr[s];
-		for (size_t i = startlen + strlen(instr), s = startlen; s < tslen; i++, s++)
+		for (size_t i = startlen, s = 0; s < strlen(inchars); s++, i++)
+			savebuffer[i] = inchars[s];
+		for (size_t i = startlen + strlen(inchars), s = startlen; s < tslen; i++, s++)
 			savebuffer[i] = this->str_c[s];
 		savebuffer[buffersize] = '\0';
 		this->str_c = savebuffer;
@@ -101,11 +101,11 @@ public:
 		return this->insert(val, str_utf8.str_c);
 	}
 
-	bool startsWith(const char* instr) {
-		int inlen = strlen(instr);
+	bool startsWith(const char* inchars) {
+		int inlen = strlen(inchars);
 		if (inlen > strlen(this->str_c)) return false;
 		for (size_t i = 0; i < inlen; i++)
-			if (this->str_c[i] != instr[i]) return false;
+			if (this->str_c[i] != inchars[i]) return false;
 		return true;
 	}
 
@@ -113,12 +113,12 @@ public:
 		return this->startsWith(str_utf8.str_c);
 	}
 
-	bool endsWith(const char* instr) {
-		int inlen = strlen(instr);
+	bool endsWith(const char* inchars) {
+		int inlen = strlen(inchars);
 		int tslen = strlen(this->str_c);
 		if (inlen > tslen) return false;
 		for (size_t s = tslen, i = inlen; i < tslen; i--, s--)
-			if (this->str_c[s] != instr[i]) return false;
+			if (this->str_c[s] != inchars[i]) return false;
 		return true;
 	}
 
@@ -157,18 +157,18 @@ public:
 		return buffer;
 	}
 
-	void append(const char* instr) {
-		int inlen = strlen(instr);
+	void append(const char* inchars) {
+		int inlen = strlen(inchars);
 		int slen = strlen(this->str_c) + inlen + 1;
 		char* temp = new char[slen];
 		strcpy(temp, this->str_c);
-		strcat(temp, instr);
+		strcat(temp, inchars);
 		this->str_c = temp;
 		this->init();
 	}
 
-	StringUTF8* operator+=(const char* instr) {
-		this->append(instr);
+	StringUTF8* operator+=(const char* inchars) {
+		this->append(inchars);
 		return this;
 	}
 
@@ -177,12 +177,12 @@ public:
 		return this;
 	}
 
-	bool equal(const char* instr) {
-		int inlen = strlen(instr);
+	bool equal(const char* inchars) {
+		int inlen = strlen(inchars);
 		int tslen = strlen(this->str_c);
 		if (tslen == inlen) {
 			for (size_t i = 0; i < tslen; i++)
-				if (this->str_c[i] != instr[i]) return false;
+				if (this->str_c[i] != inchars[i]) return false;
 			return true;
 		}
 		return false;
@@ -196,19 +196,19 @@ public:
 		return this->equal(str_utf8.str_c);
 	}
 
-	bool operator==(const char * instr) {
-		return this->equal(instr);
+	bool operator==(const char * inchars) {
+		return this->equal(inchars);
 	}
 
-	bool contains(const char* instr) {
-		int inlen = strlen(instr);
+	bool contains(const char* inchars) {
+		int inlen = strlen(inchars);
 		int tslen = strlen(this->str_c);
 		if (inlen <= tslen) {
 			char* temp = this->str_c;
 			while (strlen(temp) >= inlen) {
 				if ([&](bool is) -> bool {
 					for (size_t i = 0; i < inlen; i++) {
-						if (temp[i] != instr[i]) return is = false;
+						if (temp[i] != inchars[i]) return is = false;
 					}return is;
 					}(true)) return true;
 				temp++;
